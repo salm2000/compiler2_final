@@ -22,7 +22,14 @@ public final class TemplateEmitter {
             append(pad,pyString(opening.toString()));
             for(Attribute attribute:element.attributes)append(pad,pyString(" "+attribute.name+"=\"")+" + __cpl_render_attr("+pyString(attribute.rawValue)+", __cpl_context) + "+pyString("\""));
             append(pad,pyString(element.selfClosing?"/>":">"));nodes(element.nodes,depth);if(!element.selfClosing)append(pad,pyString("</"+element.tag+">"));
-        } else if(node instanceof ForBlock loop){out.append(pad).append("for ").append(loop.variable).append(" in ").append(expression(loop.iterable)).append(":\n");out.append(pad).append("    __cpl_context = dict(__cpl_context, ").append(loop.variable).append('=').append(loop.variable).append(")\n");nodes(loop.body,depth+1);}
+        } else if(node instanceof ForBlock loop){
+            String parent="__cpl_parent_context_"+depth;
+            out.append(pad).append(parent).append(" = __cpl_context\n");
+            out.append(pad).append("for ").append(loop.variable).append(" in ").append(expression(loop.iterable)).append(":\n");
+            out.append(pad).append("    __cpl_context = dict(").append(parent).append(", ").append(loop.variable).append('=').append(loop.variable).append(")\n");
+            nodes(loop.body,depth+1);
+            out.append(pad).append("__cpl_context = ").append(parent).append("\n");
+        }
         else if(node instanceof IfBlock conditional){
             for(int i=0;i<conditional.branches.size();i++){Branch branch=conditional.branches.get(i);out.append(pad).append(i==0?"if ":"elif ").append(expression(branch.condition)).append(":\n");nodes(branch.body,depth+1);}
             if(!conditional.elseBody.isEmpty()){out.append(pad).append("else:\n");nodes(conditional.elseBody,depth+1);}

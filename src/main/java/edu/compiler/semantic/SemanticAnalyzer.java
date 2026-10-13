@@ -18,6 +18,7 @@ public final class SemanticAnalyzer {
         "int",new int[]{1,1},"float",new int[]{1,1},"print",new int[]{0,Integer.MAX_VALUE},"redirect",new int[]{1,1});
     private static final Set<String> METHODS=Set.of("append","pop","remove","get","keys","values");
     private static final Pattern ROUTE_PARAM=Pattern.compile("<int:([A-Za-z_][A-Za-z0-9_]*)>");
+    private static final Pattern ATTRIBUTE_BINDING=Pattern.compile("\\{\\{\\s*([A-Za-z_][A-Za-z0-9_]*)");
     private final SymbolTable symbols=new SymbolTable();
     private final List<Diagnostic> diagnostics=new ArrayList<>();
     private final Map<String,FunctionDef> functions=new LinkedHashMap<>();
@@ -137,7 +138,11 @@ public final class SemanticAnalyzer {
                 if(!tags.contains(element.tag))error(element,"SEM013","unsupported HTML tag '"+element.tag+"'");
                 if(!element.selfClosing&&!Objects.equals(element.tag,element.closingTag))error(element,"SEM013","HTML closing tag '</"+element.closingTag+">' does not match '<"+element.tag+">'");
                 if(voids.contains(element.tag)&&!element.nodes.isEmpty())error(element,"SEM013","void HTML element '"+element.tag+"' cannot have children");
-                for(TemplateAst.Attribute attribute:element.attributes)if(!attrs.contains(attribute.name))error(attribute,"SEM013","unsupported HTML attribute '"+attribute.name+"'");
+                for(TemplateAst.Attribute attribute:element.attributes){
+                    if(!attrs.contains(attribute.name))error(attribute,"SEM013","unsupported HTML attribute '"+attribute.name+"'");
+                    Matcher binding=ATTRIBUTE_BINDING.matcher(attribute.rawValue);
+                    while(binding.find())if(!scope.resolves(binding.group(1)))error(attribute,"SEM005","template name '"+binding.group(1)+"' in attribute is not supplied by render context");
+                }
                 checkTemplateNodes(element.nodes,scope);
             }
         }

@@ -1,0 +1,7 @@
+body { background-color: #f4f4f4; color: #222; margin: 0; padding: 20px; }
+.page { background-color: white; width: 80%; margin: 10px; padding: 20px; border: 1px solid #ddd; }
+h1 { color: #174a7e; font-size: 28px; }
+a { color: #174a7e; }
+form { display: block; margin: 10px; }
+label, input, button { display: block; margin: 5px; padding: 5px; }
+

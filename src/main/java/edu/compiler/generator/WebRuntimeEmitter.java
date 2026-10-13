@@ -87,18 +87,31 @@ public final class WebRuntimeEmitter {
                 elif expected != actual: return None
             return values
 
+        # Class bodies mangle double-underscore names, so handlers use private
+        # single-underscore aliases for compiler runtime globals.
+        _cpl_url = __cpl_url
+        _cpl_routes = __cpl_routes
+        _cpl_match = __cpl_match
+        _cpl_pathlib = __cpl_pathlib
+        _CplRequest = __CplRequest
+        _CplResponse = __CplResponse
+
         class __CplHandler(__cpl_http.BaseHTTPRequestHandler):
             def do_GET(self): self.__dispatch('GET')
             def do_POST(self): self.__dispatch('POST')
+            def do_PUT(self): self.__dispatch('PUT')
+            def do_DELETE(self): self.__dispatch('DELETE')
+            def do_PATCH(self): self.__dispatch('PATCH')
+            def do_OPTIONS(self): self.__dispatch('OPTIONS')
             def __dispatch(self, method):
                 global request
-                path = __cpl_url.urlsplit(self.path).path
+                path = _cpl_url.urlsplit(self.path).path
                 if path.startswith('/static/'):
-                    if method != 'GET': return self.__send(__CplResponse(405, 'Method Not Allowed'))
+                    if method != 'GET': return self.__send(_CplResponse(405, 'Method Not Allowed'))
                     return self.__static(path[8:])
                 path_exists = False
-                for route_method, pattern, handler in __cpl_routes:
-                    values = __cpl_match(pattern, path)
+                for route_method, pattern, handler in _cpl_routes:
+                    values = _cpl_match(pattern, path)
                     if values is None: continue
                     path_exists = True
                     if route_method != method: continue
@@ -106,21 +119,21 @@ public final class WebRuntimeEmitter {
                         form = {}
                         if method == 'POST':
                             size = int(self.headers.get('Content-Length', '0'))
-                            if size < 0 or size > 1048576: return self.__send(__CplResponse(400, 'Bad Request'))
-                            parsed = __cpl_url.parse_qs(self.rfile.read(size).decode('utf-8'), keep_blank_values=True)
+                            if size < 0 or size > 1048576: return self.__send(_CplResponse(400, 'Bad Request'))
+                            parsed = _cpl_url.parse_qs(self.rfile.read(size).decode('utf-8'), keep_blank_values=True)
                             form = {key: values[0] for key, values in parsed.items()}
-                        request = __CplRequest(form)
+                        request = _CplRequest(form)
                         response = handler(*values)
-                        if not isinstance(response, __CplResponse): response = __CplResponse(200, '' if response is None else str(response))
+                        if not isinstance(response, _CplResponse): response = _CplResponse(200, '' if response is None else str(response))
                         return self.__send(response)
-                    except (KeyError, ValueError, UnicodeDecodeError): return self.__send(__CplResponse(400, 'Bad Request'))
-                    except Exception: return self.__send(__CplResponse(500, 'Internal Server Error'))
-                return self.__send(__CplResponse(405 if path_exists else 404, 'Method Not Allowed' if path_exists else 'Not Found'))
+                    except (KeyError, ValueError, UnicodeDecodeError): return self.__send(_CplResponse(400, 'Bad Request'))
+                    except Exception: return self.__send(_CplResponse(500, 'Internal Server Error'))
+                return self.__send(_CplResponse(405 if path_exists else 404, 'Method Not Allowed' if path_exists else 'Not Found'))
             def __static(self, relative):
-                root = (__cpl_pathlib.Path(__file__).parent / 'static').resolve()
+                root = (_cpl_pathlib.Path(__file__).parent / 'static').resolve()
                 target = (root / relative).resolve()
-                if root not in target.parents or not target.is_file() or target.suffix != '.css': return self.__send(__CplResponse(404, 'Not Found'))
-                response = __CplResponse(200, target.read_text(encoding='utf-8'), {'Content-Type': 'text/css; charset=utf-8'})
+                if root not in target.parents or not target.is_file() or target.suffix != '.css': return self.__send(_CplResponse(404, 'Not Found'))
+                response = _CplResponse(200, target.read_text(encoding='utf-8'), {'Content-Type': 'text/css; charset=utf-8'})
                 return self.__send(response)
             def __send(self, response):
                 body = response.body.encode('utf-8')

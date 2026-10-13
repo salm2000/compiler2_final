@@ -1,0 +1,2 @@
+<html><head><title>Tasks</title><link rel="stylesheet" href="/static/tasks.css"/></head><body><h1>Task board</h1><ul>{% for entry in entries %}<li>{{ entry.label }}{% if entry.done %}<span> done</span>{% else %}<span> open</span>{% endif %}</li>{% endfor %}</ul><form method="POST" action="/tasks"><label>Task</label><input type="text" name="label"/><button type="submit">Add</button></form></body></html>
+
