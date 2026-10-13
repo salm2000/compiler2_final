@@ -1,2 +1,2 @@
-<html><head><title>Product details</title><link rel="stylesheet" href="/static/style.css"/></head><body><div class="page"><a href="/">Back to products</a><h1>{{ product.name }}</h1><p>Price: ${{ product.price }}</p></div></body></html>
+<html><head><title>Product details</title><link rel="stylesheet" href="/static/style.css"/></head><body><div class="page"><a class="back" href="/">Back to products</a><div class="detail-card"><img class="detail-image" src="{{ product.image_url }}" alt="{{ product.name }}"/><h1>{{ product.name }}</h1><p class="price">${{ product.price }}</p></div></div></body></html>
 

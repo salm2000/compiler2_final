@@ -1,5 +1,5 @@
 app = Application()
-products = [{"id": 1, "name": "Notebook", "price": 12.5}, {"id": 2, "name": "Pencil", "price": 1.25}]
+products = [{"id": 1, "name": "Notebook", "price": 12.5, "image_url": "https://picsum.photos/seed/notebook/640/420"}, {"id": 2, "name": "Pencil", "price": 1.25, "image_url": "https://picsum.photos/seed/pencil/640/420"}]
 
 def find_by_id(items, target_id):
     for item in items:
@@ -20,7 +20,8 @@ def create_product():
     next_id = len(products) + 1
     name = request.form["name"]
     price = float(request.form["price"])
-    products.append({"id": next_id, "name": name, "price": price})
+    image_url = request.form["image_url"]
+    products.append({"id": next_id, "name": name, "price": price, "image_url": image_url})
     return redirect("/")
 
 @app.route("/products/<int:id>", methods=["GET"])

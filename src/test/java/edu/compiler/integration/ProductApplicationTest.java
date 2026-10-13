@@ -27,9 +27,10 @@ class ProductApplicationTest {
             assertTrue(get(client,base.resolve("/products/1")).body().contains("$12.5"));
             assertEquals(200,get(client,base.resolve("/products/new")).statusCode());
             assertEquals(200,get(client,base.resolve("/static/style.css")).statusCode());
-            HttpRequest add=HttpRequest.newBuilder(base.resolve("/products")).header("Content-Type","application/x-www-form-urlencoded").POST(HttpRequest.BodyPublishers.ofString("name=%3Cb%3EDanger%3C%2Fb%3E&price=4.5")).build();
+            HttpRequest add=HttpRequest.newBuilder(base.resolve("/products")).header("Content-Type","application/x-www-form-urlencoded").POST(HttpRequest.BodyPublishers.ofString("name=%3Cb%3EDanger%3C%2Fb%3E&price=4.5&image_url=https%3A%2F%2Fexample.com%2Fphoto.png")).build();
             assertEquals(303,client.send(add,HttpResponse.BodyHandlers.ofString()).statusCode());
             String updated=get(client,base.resolve("/")).body();assertTrue(updated.contains("&lt;b&gt;Danger&lt;/b&gt;"));assertFalse(updated.contains("<b>Danger</b>"));
+            assertTrue(updated.contains("https://example.com/photo.png"));
             HttpRequest delete=HttpRequest.newBuilder(base.resolve("/products/3/delete")).POST(HttpRequest.BodyPublishers.noBody()).build();
             assertEquals(303,client.send(delete,HttpResponse.BodyHandlers.ofString()).statusCode());
             assertFalse(get(client,base.resolve("/")).body().contains("Danger"));
