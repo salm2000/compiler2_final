@@ -5,4 +5,7 @@ target/
 *.iml
 *.log
 output/
+reports/
+__pycache__/
+*.pyc
 
