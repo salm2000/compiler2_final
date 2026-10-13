@@ -1,6 +1,7 @@
 package edu.compiler;
 
 import edu.compiler.ast.AstPrinter;
+import edu.compiler.report.HtmlReportWriter;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -18,13 +19,23 @@ public final class Main {
             ProjectResult result=command.equals("compile")?compiler.compile(source,templates,css,Path.of(options.getOrDefault("--out","output"))):compiler.analyze(source,templates,css);
             result.diagnostics().forEach(x->System.err.println(x));if(!result.successful())return 1;
             if(command.equals("ast")){
-                AstPrinter printer=new AstPrinter();System.out.print(result.python().accept(printer));
-                result.templates().entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(x->System.out.print(x.getValue().accept(printer)));
-            }else if(command.equals("symbols"))System.out.print(result.symbols().dump());
+                if(options.containsKey("--html")){
+                    Path report=Path.of(options.get("--html"));new HtmlReportWriter().writeAst(result,report);
+                    System.out.println("Wrote AST report to "+report.toAbsolutePath());
+                }else{
+                    AstPrinter printer=new AstPrinter();System.out.print(result.python().accept(printer));
+                    result.templates().entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(x->System.out.print(x.getValue().accept(printer)));
+                }
+            }else if(command.equals("symbols")){
+                if(options.containsKey("--html")){
+                    Path report=Path.of(options.get("--html"));new HtmlReportWriter().writeSymbols(result,report);
+                    System.out.println("Wrote symbol report to "+report.toAbsolutePath());
+                }else System.out.print(result.symbols().dump());
+            }
             else System.out.println("Compiled "+source+" successfully to "+Path.of(options.getOrDefault("--out","output")).toAbsolutePath());
             return 0;
         }catch(Exception error){System.err.println("Compiler failure: "+error.getMessage());return 2;}
     }
-    private static void usage(){System.err.println("Usage: java -jar compiler.jar <compile|ast|symbols> SOURCE [--templates DIR] [--css DIR] [--out DIR]");}
+    private static void usage(){System.err.println("Usage: java -jar compiler.jar <compile|ast|symbols> SOURCE [--templates DIR] [--css DIR] [--out DIR] [--html FILE]");}
 }
 
