@@ -16,7 +16,9 @@ The implementation is deliberately domain-independent. Routes are derived from d
 
 ## AST and inspection
 
-The detailed class diagram is in [`ast-diagram.md`](ast-diagram.md). `java -jar target/compiler.jar ast ...` recursively prints every node, relevant values, source location, and children. The `symbols` command prints symbol name, kind, scope, location, and bounded inferred type.
+The detailed class diagram is in [`ast-diagram.md`](ast-diagram.md). `java -jar target/compiler.jar ast ...` recursively prints every node, relevant values, source location, and children. The `symbols` command prints symbol name, kind, scope, location, and bounded inferred type. Both commands accept `--html FILE` to create a styled, self-contained browser report with escaped compiler data.
+
+`compiler_tool.py` provides a numbered interactive interface and equivalent scriptable subcommands. It discovers examples, creates valid starter projects, rebuilds a missing or stale compiler, compiles and runs selected examples, generates and opens both reports, and launches the full test suite.
 
 ## Runtime and security policy
 
@@ -37,6 +39,6 @@ The test suite and `examples/negative-tests` demonstrate `SEM001` through `SEM00
 
 ## Verification
 
-The Maven suite covers parsing, both AST builders, tree printing, symbol output, positive and negative semantics, generated Python syntax, escaping, and two application domains. Its HTTP integration test compiles and starts the product application, then verifies listing, details, add/303 redirect, delete/303 redirect, static CSS, escaping, 404, and 405 responses. A generated-code acceptance test covers arithmetic precedence, forward calls, recursion, conditionals, `while`, `break`, `continue`, indexing, and list mutation without Flask or Jinja2 installed.
+The Maven suite covers parsing, both AST builders, tree printing, HTML reports, terminal-tool discovery, symbol output, positive and negative semantics, generated Python syntax, escaping, and two application domains. Its HTTP integration test compiles and starts the image-enabled product application, then verifies listing, details, add/303 redirect, delete/303 redirect, static CSS, escaping, 404, and 405 responses. A generated-code acceptance test covers arithmetic precedence, forward calls, recursion, conditionals, `while`, `break`, `continue`, indexing, and list mutation without Flask or Jinja2 installed.
 
 The only submission metadata not inferable from source is intentionally marked `TODO` in `submission-info.txt`: the team must add its repository URL and member names before packaging the assigned group archive.
