@@ -16,7 +16,7 @@ The implementation is deliberately domain-independent. Routes are derived from d
 
 ## AST and inspection
 
-The detailed class diagram is in [`ast-diagram.md`](ast-diagram.md). `java -jar target/compiler.jar ast ...` recursively prints every node, relevant values, source location, and children. The `symbols` command prints symbol name, kind, scope, location, and bounded inferred type. Both commands accept `--html FILE` to create a styled, self-contained browser report with escaped compiler data.
+The detailed class diagram is in [`ast-diagram.md`](ast-diagram.md). `java -jar target/compiler.jar ast ...` recursively prints every node, relevant values, source location, and children. The `symbols` command prints symbol name, kind, scope, location, and bounded inferred type. Both commands accept `--html FILE` to create a styled, self-contained browser report with escaped compiler data. The AST report serializes the polymorphic node hierarchy into safe embedded JSON and uses offline JavaScript/SVG to draw an interactive node-link graph with zooming, fit-to-width, accessible branch collapsing, distinct Python/template colors, and a textual fallback.
 
 `compiler_tool.py` provides a numbered interactive interface and equivalent scriptable subcommands. It discovers examples, creates valid starter projects, rebuilds a missing or stale compiler, compiles and runs selected examples, generates and opens both reports, and launches the full test suite.
 

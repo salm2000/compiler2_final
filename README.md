@@ -21,7 +21,7 @@ java -jar target/compiler.jar symbols examples/products/app.py --templates examp
 python output/products/app.py 8000
 ```
 
-AST and symbol output can be written as styled, standalone browser reports:
+AST and symbol output can be written as styled, standalone browser reports. The AST report includes an interactive node-link graph with branch collapsing, zoom, fit-to-width, Python/template colors, keyboard controls, and a searchable text fallback:
 
 ```powershell
 java -jar target/compiler.jar ast examples/products/app.py --templates examples/products/templates --css examples/products/static --html reports/products/ast.html

@@ -17,6 +17,8 @@ class HtmlReportWriterTest {
         HtmlReportWriter writer=new HtmlReportWriter();writer.writeAst(result,ast);writer.writeSymbols(result,symbols);
         String astHtml=Files.readString(ast,StandardCharsets.UTF_8);String symbolHtml=Files.readString(symbols,StandardCharsets.UTF_8);
         assertTrue(astHtml.contains("<!doctype html>"));assertTrue(astHtml.contains("PythonModule"));assertTrue(astHtml.contains("TemplateDocument"));
+        assertTrue(astHtml.contains("id=\"astGraph\""));assertTrue(astHtml.contains("const astData ="));assertTrue(astHtml.contains("class: 'edge'"));
+        assertTrue(astHtml.contains("Expand all"));assertTrue(astHtml.contains("Searchable text tree"));
         assertFalse(astHtml.contains("<int:id>"));
         assertTrue(symbolHtml.contains("<table>"));assertTrue(symbolHtml.contains("dashboard"));assertTrue(symbolHtml.contains("TEMPLATE_BINDING"));
     }
