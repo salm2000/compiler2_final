@@ -1,9 +1,12 @@
 package edu.compiler.ast.python;
 
-import edu.compiler.ast.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+
+import edu.compiler.ast.AstNode;
+import edu.compiler.ast.AstVisitor;
+import edu.compiler.ast.SourceLocation;
 
 public final class PythonAst {
     private PythonAst() {}

@@ -20,4 +20,17 @@ form { display: block; margin: 10px; padding: 10px; }
 label { color: #334155; display: block; margin: 8px; }
 input { background-color: white; display: block; width: 90%; margin: 8px; padding: 10px; border: 1px solid #a4b3c8; }
 button { background-color: #b42318; color: white; display: block; margin: 8px; padding: 10px; border: 1px solid #b11d14; }
+.runtime-reports { background-color: #eef3f8; display: block; margin: 18px 8px; padding: 14px; border: 1px solid #cbd5e1; }
+.runtime-panel { background-color: white; display: block; margin: 12px; padding: 14px; border: 1px solid #a4b3c8; }
+.runtime-heading { color: #174a7e; font-size: 18px; margin: 6px; }
+.report-note { color: #64748b; margin: 6px; }
+.ast-tree { background-color: #f8fafc; display: block; margin: 10px; padding: 14px; border: 1px solid #d8e2ec; }
+.ast-node { display: block; margin: 5px; padding: 4px; }
+.ast-branch { color: #174a7e; border: 1px solid #d8e2ec; }
+.symbol-row { display: block; margin: 0; padding: 8px; border: 1px solid #d8e2ec; }
+.symbol-header-cell { color: white; display: block; margin: 2px; padding: 3px; }
+.symbol-header { background-color: #174a7e; color: white; }
+.symbol-name { color: #174a7e; }
+.symbol-type { color: #137955; }
+.symbol-value { color: #334155; }
 

@@ -1,2 +1,71 @@
-<html><head><title>Product gallery</title><link rel="stylesheet" href="/static/style.css"/></head><body><div class="page"><div class="hero"><h1 class="hero-title">Product gallery</h1><p>Browse the catalog or add something new.</p><a class="primary" href="/products/new">Add a product</a></div><ul class="product-list">{% for product in items %}<li class="card"><img class="product-image" src="{{ product.image_url }}" alt="{{ product.name }}"/><div class="card-content"><h2>{{ product.name }}</h2><p class="price">${{ product.price }}</p><a class="details" href="/products/{{ product.id }}">View details</a><form method="POST" action="/products/{{ product.id }}/delete"><button type="submit">Delete</button></form></div></li>{% endfor %}</ul></div></body></html>
+<html>
+<head>
+<title>Product gallery</title>
+<link rel="stylesheet" href="/static/style.css"/>
+</head>
+<body>
+<div class="page">
+<div class="hero">
+<h1 class="hero-title">Product gallery</h1>
+<p>Browse the catalog or add something new.</p>
+<a class="primary" href="/products/new">Add a product</a>
+</div>
+<ul class="product-list">
+{% for product in items %}
+<li class="card">
+<img class="product-image" src="{{ product.image_url }}" alt="{{ product.name }}"/>
+<div class="card-content">
+<h2>{{ product.name }}</h2>
+<p class="price">${{ product.price }}</p>
+<a class="details" href="/products/{{ product.id }}">View details</a>
+<form method="POST" action="/products/{{ product.id }}/delete">
+<button type="submit">Delete</button>
+</form>
+<div class="runtime-reports">
+<div class="runtime-panel ast-panel">
+<h3 class="runtime-heading">Runtime Product AST</h3>
+<p class="report-note">A tree representation of this product's current data.</p>
+<ul class="ast-tree">
+<li class="ast-node">ProductObject</li>
+<li class="ast-branch">Field: id
+<ul><li class="ast-node">IntLiteral: {{ product.id }}</li></ul>
+</li>
+<li class="ast-branch">Field: name
+<ul><li class="ast-node">StringLiteral: {{ product.name }}</li></ul>
+</li>
+<li class="ast-branch">Field: price
+<ul><li class="ast-node">FloatLiteral: {{ product.price }}</li></ul>
+</li>
+<li class="ast-branch">Field: image_url
+<ul><li class="ast-node">StringLiteral: {{ product.image_url }}</li></ul>
+</li>
+</ul>
+</div>
+<div class="runtime-panel symbols-panel">
+<h3 class="runtime-heading">Runtime Symbol Table</h3>
+<p class="report-note">Symbols and values stored for this product.</p>
+<div class="symbol-row symbol-header">
+<span class="symbol-header-cell">Name</span><span class="symbol-header-cell">Type</span><span class="symbol-header-cell">Value</span>
+</div>
+<div class="symbol-row">
+<span class="symbol-name">id</span><span class="symbol-type">Int</span><span class="symbol-value">{{ product.id }}</span>
+</div>
+<div class="symbol-row">
+<span class="symbol-name">name</span><span class="symbol-type">String</span><span class="symbol-value">{{ product.name }}</span>
+</div>
+<div class="symbol-row">
+<span class="symbol-name">price</span><span class="symbol-type">Float</span><span class="symbol-value">{{ product.price }}</span>
+</div>
+<div class="symbol-row">
+<span class="symbol-name">image_url</span><span class="symbol-type">String</span><span class="symbol-value">{{ product.image_url }}</span>
+</div>
+</div>
+</div>
+</div>
+</li>
+{% endfor %}
+</ul>
+</div>
+</body>
+</html>
 

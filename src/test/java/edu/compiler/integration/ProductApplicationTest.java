@@ -31,6 +31,10 @@ class ProductApplicationTest {
             assertEquals(303,client.send(add,HttpResponse.BodyHandlers.ofString()).statusCode());
             String updated=get(client,base.resolve("/")).body();assertTrue(updated.contains("&lt;b&gt;Danger&lt;/b&gt;"));assertFalse(updated.contains("<b>Danger</b>"));
             assertTrue(updated.contains("https://example.com/photo.png"));
+            assertTrue(updated.contains("Runtime Product AST"));
+            assertTrue(updated.contains("Runtime Symbol Table"));
+            assertTrue(updated.contains("IntLiteral: 3"));
+            assertTrue(updated.contains("FloatLiteral: 4.5"));
             HttpRequest delete=HttpRequest.newBuilder(base.resolve("/products/3/delete")).POST(HttpRequest.BodyPublishers.noBody()).build();
             assertEquals(303,client.send(delete,HttpResponse.BodyHandlers.ofString()).statusCode());
             assertFalse(get(client,base.resolve("/")).body().contains("Danger"));
